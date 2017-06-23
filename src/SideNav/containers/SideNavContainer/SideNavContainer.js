@@ -1,7 +1,7 @@
 import React from 'react';
 import CollapsibleComponent from '../../components/CollapsibleComponent/';
 
-import { SideNav, Button, } from 'react-materialize';
+import { SideNav } from 'react-materialize';
 
 class SideNavContainer extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class SideNavContainer extends React.Component {
     }
 
     this.getItemsList = this.getItemsList.bind(this);
+    this.getCollapsibleComponent = this.getCollapsibleComponent.bind(this);
   }
 
   getItemsList() {
@@ -49,24 +50,26 @@ class SideNavContainer extends React.Component {
     })
   }
 
+  getCollapsibleComponent() {
+    return !this.state.loading && (
+      this.state.itemsList
+        .map(item =>
+          <CollapsibleComponent
+            name={ item.name }
+            childs={ item.childs }
+            key={ item.id }
+          />
+        )
+    )
+  }
+
   render() {
     return (
       <SideNav
-        trigger={<Button><i className="large material-icons">view_headline</i></Button>}
+        trigger={<i className="large material-icons">view_headline</i>}
         options={{ closeOnClick: true }}
         >
-        {
-          !this.state.loading && (
-            this.state.itemsList
-              .map(item =>
-                <CollapsibleComponent
-                  name={ item.name }
-                  childs={ item.childs }
-                  key={ item.id }
-                />
-              )
-          )
-        }
+        { this.getCollapsibleComponent() }
       </SideNav>
     )
   }
